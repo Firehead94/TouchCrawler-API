@@ -11,7 +11,3 @@ class Test(Resource):
 
 
 api.add_resource(Test, '/')
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
