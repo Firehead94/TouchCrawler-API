@@ -65,12 +65,13 @@ class Test(Resource):
 class DBTest(Resource):
     def get(self):
         names = []
+        DBconnection = False
         with db.connect() as conn:
             result = conn.execute("SELECT firstName FROM accounts").fetchall()
         for row in result:
-            names.append({"FirstName" : row[0]})
+            DBconnection = True
 
-        return names
+        return {"DB_Connection":DBconnection}
 
 
 api.add_resource(Test, '/')
