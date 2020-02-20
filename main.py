@@ -44,7 +44,7 @@ class AddScore(Resource):
             except google.cloud.expections.NotFound:
                 return "no document found"
         else:
-            return "UID INVALID"
+            return {"UID":"UID INVALID"}
 
 class GetScores(Resource):
     def get(self):
@@ -56,7 +56,9 @@ class GetScores(Resource):
             scores[UID] = info
         return scores
 
-
+class Test(Resource):
+    def get(self):
+        return {"TEST":"SUCCESSFUL"}
 
 
 
@@ -76,3 +78,4 @@ def Validate(token):
 
 api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
 api.add_resource(GetScores, "/scores")
+api.add_resource(Test, "/test")
