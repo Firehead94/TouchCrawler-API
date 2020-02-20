@@ -33,7 +33,6 @@ class AddScore(Resource):
         key = args['key']
 
         UID = Validate(key)
-        print(UID)
         if UID is not None:
             doc_ref = db.collection(u'userScores').document(UID)
             try:
@@ -41,9 +40,11 @@ class AddScore(Resource):
                 scores = doc.to_dict()
                 scores[time.time()] = score
                 doc_ref.set(scores)
-                print(scores)
+                return scores
             except google.cloud.expections.NotFound:
-                print("no document found")
+                return "no document found"
+        else:
+            return "UID INVALID"
 
 
 
@@ -61,4 +62,4 @@ def Validate(token):
 
 
 
-api.add_resource(AddScore, "/newscore")  ## /newscore?key=XXXXXXXXXXXXXXXXXX&score=
+api.add_resource(AddScore, "/newscore")  ## http://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
