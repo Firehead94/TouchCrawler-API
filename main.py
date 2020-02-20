@@ -3,7 +3,6 @@ import firebase_admin
 from Tools.scripts import google
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
-from database.connection import db
 from google.oauth2 import id_token
 from google.auth.transport import requests
 from firebase_admin import credentials, firestore
@@ -16,8 +15,8 @@ db = firestore.client()
 credentialsFile = "credentials.ini"
 credentials_web = ConfigParser()
 credentials_web.read(credentialsFile)
-
 CLIENT_ID = credentials_web.get('main', 'WEBAPI_CLIENT')
+
 web_app = Flask(__name__)
 api = Api(web_app)
 parser = reqparse.RequestParser()
