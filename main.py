@@ -78,3 +78,6 @@ def Validate(token):
 api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
 api.add_resource(GetScores, "/scores")
 api.add_resource(Test, "/test")
+
+if __name__ == '__main__':
+    app.run(debug=True)
