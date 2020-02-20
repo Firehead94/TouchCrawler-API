@@ -1,18 +1,23 @@
+from configparser import ConfigParser
+import firebase_admin
 from flask import Flask
 from flask_restful import Resource, Api
 from database.connection import db
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from configparser import ConfigParser
+from firebase_admin import credentials, firestore
+
+cred = credentials.Certificate('./touchcrawler-firebase-adminsdk-jbfj7-3950b63662.json')
+default_app = firebase_admin.initialize_app(cred)
+db = firestore.client()
 
 credentialsFile = "credentials.ini"
-credentials = ConfigParser()
-credentials.read(credentialsFile)
+credentials_web = ConfigParser()
+credentials_web.read(credentialsFile)
 
-CLIENT_ID = credentials.get('main', 'WEBAPI_CLIENT')
-
-app = Flask(__name__)
-api = Api(app)
+CLIENT_ID = credentials_web.get('main', 'WEBAPI_CLIENT')
+web_app = Flask(__name__)
+api = Api(web_app)
 
 
 class Test(Resource):
