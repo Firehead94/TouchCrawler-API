@@ -46,6 +46,18 @@ class AddScore(Resource):
         else:
             return "UID INVALID"
 
+class GetScores(Resource):
+    def get(self):
+        doc_ref = db.collection(u'userScores').stream()
+        scores = {}
+        for doc in doc_ref:
+            UID = doc.id
+            info = doc.to_dict()
+            scores[UID] = info
+        return scores
+
+
+
 
 
 def Validate(token):
@@ -62,4 +74,5 @@ def Validate(token):
 
 
 
-api.add_resource(AddScore, "/newscore")  ## http://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
+api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
+api.add_resource(GetScores, "/scores")
