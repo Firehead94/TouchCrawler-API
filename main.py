@@ -80,4 +80,4 @@ api.add_resource(GetScores, "/scores")
 api.add_resource(Test, "/test")
 
 if __name__ == '__main__':
-    web_app.run(debug=True)
+    web_app.run(debug=False)
