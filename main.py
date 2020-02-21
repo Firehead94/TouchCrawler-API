@@ -12,7 +12,7 @@ cred = credentials.Certificate('./touchcrawler-firebase-adminsdk-jbfj7-3950b6366
 default_app = firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-credentialsFile = "credentials.ini"
+credentialsFile = "./credentials.ini"
 credentials_web = ConfigParser()
 credentials_web.read(credentialsFile)
 CLIENT_ID = credentials_web.get('main', 'WEBAPI_CLIENT')
