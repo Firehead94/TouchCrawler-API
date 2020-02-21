@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 import firebase_admin
-from Tools.scripts import google
+import google
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from google.oauth2 import id_token
