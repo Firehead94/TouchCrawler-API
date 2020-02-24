@@ -24,7 +24,6 @@ parser.add_argument('score', type=int)
 parser.add_argument('key', type=str)
 
 
-
 class AddScore(Resource):
     def post(self):
         args = parser.parse_args()
@@ -43,7 +42,8 @@ class AddScore(Resource):
             except google.cloud.expections.NotFound:
                 return "no document found"
         else:
-            return {"UID":"UID INVALID"}
+            return {"error":"NoDoc Found"}
+
 
 class GetScores(Resource):
     def get(self):
@@ -55,9 +55,11 @@ class GetScores(Resource):
             scores[UID] = info
         return scores
 
+
 class Test(Resource):
     def get(self):
         return {"TEST":"SUCCESSFUL"}
+
 
 class GetTopScores(Resource):
     def get(self):
@@ -66,8 +68,7 @@ class GetTopScores(Resource):
             doc = doc_ref.get()
             return doc.to_dict()
         except:
-            return {"topscores":"INVALID"}
-
+            return {"error":"NoDoc Found"}
 
 
 def Validate(token):
@@ -76,12 +77,9 @@ def Validate(token):
 
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Invalid Token Issuer...')
-
         return idinfo['sub']
-
     except ValueError:
         return None
-
 
 
 api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
