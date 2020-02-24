@@ -59,6 +59,15 @@ class Test(Resource):
     def get(self):
         return {"TEST":"SUCCESSFUL"}
 
+class GetTopScores(Resource):
+    def get(self):
+        doc_ref = db.collection(u'scores').document("top")
+        try:
+            doc = doc_ref.get()
+            return doc.to_dict()
+        except:
+            return {"topscores":"INVALID"}
+
 
 
 def Validate(token):
@@ -77,4 +86,5 @@ def Validate(token):
 
 api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
 api.add_resource(GetScores, "/scores")
+api.add_resource(GetScores, "/scores/top")
 api.add_resource(Test, "/test")
