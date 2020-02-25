@@ -7,6 +7,8 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from firebase_admin import credentials, firestore
 import time
+import RequestBuilder
+from RequestBuilder import Error
 
 cred = credentials.Certificate('./touchcrawler-firebase-adminsdk-jbfj7-3950b63662.json')
 default_app = firebase_admin.initialize_app(cred)
@@ -29,6 +31,7 @@ class AddScore(Resource):
         args = parser.parse_args()
         score = args['score']
         key = args['key']
+        error = None
 
         UID = Validate(key)
         if UID is not None:
@@ -38,11 +41,12 @@ class AddScore(Resource):
                 scores = doc.to_dict()
                 scores[time.time()] = score
                 doc_ref.set(scores)
-                return scores
+                return RequestBuilder.buildrequest(scores, error)
             except google.cloud.expections.NotFound:
-                return "no document found"
+                error = Error.DOCUMENT
         else:
-            return {"error":"NoDoc Found"}
+            error = Error.UID
+        return RequestBuilder.buildrequest('',error)
 
 
 class GetScores(Resource):
@@ -53,7 +57,7 @@ class GetScores(Resource):
             UID = doc.id
             info = doc.to_dict()
             scores[UID] = info
-        return scores
+        return RequestBuilder.buildrequest(scores, None)
 
 
 class Test(Resource):
@@ -66,9 +70,12 @@ class GetTopScores(Resource):
         doc_ref = db.collection(u'scores').document("top")
         try:
             doc = doc_ref.get()
-            return doc.to_dict()
+            doc = doc.to_dict()
+            error = ''
         except:
-            return {"error":"NoDoc Found"}
+            error = Error.DOCUMENT
+            doc = None
+        return RequestBuilder.buildrequest(doc, error)
 
 
 def Validate(token):
@@ -79,7 +86,7 @@ def Validate(token):
             raise ValueError('Invalid Token Issuer...')
         return idinfo['sub']
     except ValueError:
-        return None
+        return RequestBuilder.buildrequest('', Error.TOKEN)
 
 
 api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
