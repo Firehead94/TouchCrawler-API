@@ -1,18 +1,15 @@
 from configparser import ConfigParser
-import firebase_admin
 import google
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from firebase_admin import credentials, firestore
 import time
 import RequestBuilder
-from RequestBuilder import Error
-
-cred = credentials.Certificate('./touchcrawler-firebase-adminsdk-jbfj7-3950b63662.json')
-default_app = firebase_admin.initialize_app(cred)
-db = firestore.client()
+from RequestBuilder import Error, RequestBuilder
+import database.database
+from database.database import db, Player, TopScores
+from google.cloud import exceptions
 
 credentialsFile = "./credentials.ini"
 credentials_web = ConfigParser()
@@ -21,61 +18,97 @@ CLIENT_ID = credentials_web.get('main', 'WEBAPI_CLIENT')
 
 app = Flask(__name__)
 api = Api(app)
-parser = reqparse.RequestParser()
-parser.add_argument('score', type=int)
-parser.add_argument('key', type=str)
 
 
+add_parser = reqparse.RequestParser()
+add_parser.add_argument('score', type=int)
+add_parser.add_argument('key', type=str)
 class AddScore(Resource):
     def post(self):
-        args = parser.parse_args()
+        args = add_parser.parse_args()
         score = args['score']
         key = args['key']
-        error = None
 
         UID = Validate(key)
         if UID is not None:
-            doc_ref = db.collection(u'userScores').document(UID)
+            doc_ref = db.collection(u'players').document(UID)
             try:
-                doc = doc_ref.get()
-                scores = doc.to_dict()
-                scores[time.time()] = score
-                doc_ref.set(scores)
-                return RequestBuilder.buildrequest(scores, error)
-            except google.cloud.expections.NotFound:
+                doc = doc_ref.get().to_dict()
+                player = Player(doc['username'], doc['scores'])
+                player.scores.append((time.time(), score))
+
+                doc_ref.set({u'username':player.username,u'scores':player.scores})
+                return RequestBuilder.buildrequest({"success":True}, None)
+            except exceptions.NotFound:
                 error = Error.DOCUMENT
         else:
             error = Error.UID
+        return RequestBuilder.buildrequest('',UID)
+
+
+top_score_parser = reqparse.RequestParser()
+top_score_parser.add_argument('start', type=int, default=0)
+top_score_parser.add_argument('end', type=int)
+class GetTopScores(Resource):
+    def get(self):
+        args = top_score_parser.parse_args()
+        doc_ref = db.collection(u'topscores').document(u'scores')
+        try:
+            data = doc_ref.get().to_dict()
+            scores = TopScores(data['scores'])
+            if args['end']:
+                return RequestBuilder.buildrequest(scores.get_scores_sorted()[args['start']:args['end']], None)
+            return RequestBuilder.buildrequest(scores.get_scores_sorted()[args['start']], None)
+        except exceptions.NotFound:
+            error = Error.DOCUMENT
         return RequestBuilder.buildrequest('',error)
 
 
-class GetScores(Resource):
+player_parser = reqparse.RequestParser()
+player_parser.add_argument('id')
+class GetPlayer(Resource):
     def get(self):
-        doc_ref = db.collection(u'userScores').stream()
-        scores = {}
-        for doc in doc_ref:
-            UID = doc.id
-            info = doc.to_dict()
-            scores[UID] = info
-        return RequestBuilder.buildrequest(scores, None)
+        args = player_parser.parse_args()
+        if args['id']:
+            doc_ref = db.collection(u'players').document(args['id'])
+            try:
+                data = doc_ref.get().to_dict()
+                player = Player(data['username'], data['scores'])
+                return RequestBuilder.buildrequest(player, None)
+            except exceptions.NotFound:
+                error = Error.DOCUMENT
+        else:
+            error = Error.UID
+        return RequestBuilder.buildrequest('', error)
+
+
+player_scores_parser = reqparse.RequestParser()
+player_scores_parser.add_argument('id')
+player_scores_parser.add_argument('start', type=int, default=0)
+player_scores_parser.add_argument('end', type=int)
+class GetPlayerScores(Resource):
+    def get(self):
+        args = player_scores_parser.parse_args()
+        if args['id']:
+            doc_ref = db.collection(u'players').document(args['id'])
+            try:
+                data = doc_ref.get().to_dict()
+                player = Player(data['username'], data['scores'])
+                if args['topend']:
+                    scores = player.get_top_scores(args['cutoff'], args['topend'])
+                else:
+                    scores = player.get_top_scores(args['cutoff'])
+                return RequestBuilder.buildrequest(scores, None)
+            except exceptions.NotFound:
+                error = Error.DOCUMENT
+        else:
+            error = Error.UID
+        return RequestBuilder.buildrequest('', error)
 
 
 class Test(Resource):
     def get(self):
         return {"TEST":"SUCCESSFUL"}
-
-
-class GetTopScores(Resource):
-    def get(self):
-        doc_ref = db.collection(u'scores').document("top")
-        try:
-            doc = doc_ref.get()
-            doc = doc.to_dict()
-            error = ''
-        except:
-            error = Error.DOCUMENT
-            doc = None
-        return RequestBuilder.buildrequest(doc, error)
 
 
 def Validate(token):
@@ -86,10 +119,11 @@ def Validate(token):
             raise ValueError('Invalid Token Issuer...')
         return idinfo['sub']
     except ValueError:
-        return RequestBuilder.buildrequest('', Error.TOKEN)
+        return None
 
 
-api.add_resource(AddScore, "/newscore")  ## https://touchcrawler.appspot.com/newscore?key=XXXXXXXXXXXXXXXXXX&score=
-api.add_resource(GetScores, "/scores")
-api.add_resource(GetScores, "/scores/top")
 api.add_resource(Test, "/test")
+api.add_resource(AddScore, "/addscore")  ## https://touchcrawler.appspot.com/addscore?key=XXXXXXXXXXXXXXXXXX&score=
+api.add_resource(GetPlayer, "/player") ## https://touchcrawler.appspot.com/addscore?id=XXXXXXXXXXXXXXXXXX
+api.add_resource(GetPlayerScores, "/playerscores") ## https://touchcrawler.appspot.com/addscore?id=XXXXXXXXXXXXXXXXXX&start=XXXXXXXXXXXXXXXXXX&end=XXXXXXXXXXXXXXXXXXXXX 
+api.add_resource(GetTopScores, "/topscores") ## https://touchcrawler.appspot.com/topscores?start=XXXXXXXXXXXXXXXXXX&end=XXXXXXXXXXXXXXXXXXXXX  ## end is optional
