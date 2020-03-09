@@ -13,10 +13,11 @@ class RequestBuilder:
         if data is not None:
             request["data"] = data
         else:
-            request["error"] = Error.DATA
+            request["error"] = errors[Error.DATA]
         if error is not None:
-            request["error"] = error
+            request["error"] = errors[error]
         return request
+
 
 def gettemplate():
     request = {}
@@ -27,8 +28,10 @@ def gettemplate():
 
 
 class Error(Enum):
-    DATA = "1001: No Data Found"
-    API = "1002: Invalid API Request"
-    TOKEN = "1003: Bad/Expired Token"
-    DOCUMENT = "1004: No Document Found"
-    UID = "1005: User Not Found"
+    DATA = 0
+    API = 1
+    TOKEN = 2
+    DOCUMENT = 3
+    UID = 4
+
+errors = ["1001: No Data Found","1002: Invalid API Request","1003: Bad/Expired Token","1004: No Document Found","1005: User Not Found"]
