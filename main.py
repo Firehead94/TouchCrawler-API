@@ -10,6 +10,7 @@ from RequestBuilder import Error, RequestBuilder
 import database.database
 from database.database import db, Player, TopScores
 from google.cloud import exceptions
+from google.api_core import datetime_helpers
 
 credentialsFile = "./credentials.ini"
 credentials_web = ConfigParser()
@@ -59,7 +60,7 @@ class GetTopScores(Resource):
             data = []
             for doc in doc_ref:
                 info = doc.to_dict()
-                tmp = [info['score'], info['uid'], info['date']]
+                tmp = [info['score'], info['uid'], info['date'].timestamp_pb()]
                 data.append(tmp)
             scores = TopScores(data)
             if args['end']:
