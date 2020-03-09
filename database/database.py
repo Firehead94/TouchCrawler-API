@@ -30,6 +30,5 @@ class TopScores:
         self.scores = scores
 
     def get_scores_sorted(self):
-        print(self.scores)
-        return sorted(self.scores, key=operator.itemgetter(2))
+        return sorted(self.scores, key=operator.itemgetter(3))
 
