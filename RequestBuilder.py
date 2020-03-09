@@ -13,9 +13,9 @@ class RequestBuilder:
         if data is not None:
             request["data"] = data
         else:
-            request["error"] = errors[Error.DATA]
+            request["error"] = errors[Error.DATA.value]
         if error is not None:
-            request["error"] = errors[error]
+            request["error"] = errors[error.value]
         return request
 
 
