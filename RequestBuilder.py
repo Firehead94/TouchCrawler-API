@@ -3,11 +3,12 @@ from firebase_admin import credentials, firestore
 import time
 import firebase_admin
 from enum import Enum
+import typing
 
 
 class RequestBuilder:
 
-    def buildrequest(self, data, error):
+    def buildrequest(self, data, error: typing.Optional = None):
         request = self.gettemplate()
         if data is not None:
             request["data"] = data
