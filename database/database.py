@@ -33,5 +33,6 @@ class TopScores:
         print("=================")
         print(self.scores)
         print("=================")
+        print(sorted(self.scores, key=operator.itemgetter(1)))
         return sorted(self.scores, key=operator.itemgetter(1))
 
