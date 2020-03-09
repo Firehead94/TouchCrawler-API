@@ -17,7 +17,6 @@ class RequestBuilder:
         if self.data is not None:
             request["data"] = self.data
         else:
-            print("============no data==============")
             request["error"] = errors[Error.DATA.value]
         if self.error is not None:
             request["error"] = errors[self.error.value]

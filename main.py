@@ -66,7 +66,6 @@ class GetTopScores(Resource):
             scores = TopScores(data)
             if args['end']:
                 data = scores.get_scores_sorted()
-                print(data[int(args['start']):int(args['end'])])
                 request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
                 return request.get_request()
             request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
