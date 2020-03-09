@@ -54,7 +54,12 @@ class GetTopScores(Resource):
         args = top_score_parser.parse_args()
         doc_ref = db.collection(u'topscores').get()
         try:
-            data = doc_ref.to_dict()
+            data = []
+            print(doc_ref)
+            print("++++++++++++++++++++")
+            for doc in doc_ref:
+                info = doc.data()
+                print(info)
             print("===========")
             print(data)
             print("===========")
