@@ -13,6 +13,7 @@ class RequestBuilder:
         if data is not None:
             request["data"] = data
         else:
+            print("============no data==============")
             request["error"] = errors[Error.DATA.value]
         if error is not None:
             request["error"] = errors[error.value]
