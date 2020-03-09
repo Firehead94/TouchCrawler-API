@@ -9,7 +9,7 @@ import typing
 class RequestBuilder:
 
     def buildrequest(self, data, error: typing.Optional = None):
-        request = self.gettemplate()
+        request = gettemplate()
         if data is not None:
             request["data"] = data
         else:
@@ -18,12 +18,12 @@ class RequestBuilder:
             request["error"] = error
         return request
 
-    def gettemplate(self):
-        request = {}
-        request["error"] = None
-        request["timestamp"] = time.asctime(time.localtime(time.time()))
-        request["data"] = {}
-        return request
+def gettemplate():
+    request = {}
+    request["error"] = None
+    request["timestamp"] = time.asctime(time.localtime(time.time()))
+    request["data"] = {}
+    return request
 
 
 class Error(Enum):
