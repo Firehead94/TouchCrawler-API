@@ -54,7 +54,7 @@ class GetTopScores(Resource):
         args = top_score_parser.parse_args()
         doc_ref = db.collection(u'topscores').stream()
         try:
-            data = [[]]
+            data = []
             for doc in doc_ref:
                 info = doc.to_dict()
                 tmp = [info['score'], info['uid'], info['date']]
