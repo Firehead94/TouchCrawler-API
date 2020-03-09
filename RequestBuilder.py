@@ -8,19 +8,19 @@ import typing
 
 class RequestBuilder:
 
-    def buildrequest(self, data, error: typing.Optional = None):
+    def __init__(self, data, error: typing.Optional = None):
+        self.data = data
+        self.error = error
+
+    def get_request(self):
         request = gettemplate()
-        print("data")
-        print(data)
-        print("error")
-        print(error)
-        if data is not None:
-            request["data"] = data
+        if self.data is not None:
+            request["data"] = self.data
         else:
             print("============no data==============")
             request["error"] = errors[Error.DATA.value]
-        if error is not None:
-            request["error"] = errors[error.value]
+        if self.error is not None:
+            request["error"] = errors[self.error.value]
         return request
 
 

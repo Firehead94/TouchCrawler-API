@@ -38,12 +38,14 @@ class AddScore(Resource):
                 player.scores.append((time.time(), score))
 
                 doc_ref.set({u'username':player.username,u'scores':player.scores})
-                return RequestBuilder.buildrequest({"success":True}, None)
+                request = RequestBuilder({"success":True}, None)
+                return request.get_request()
             except exceptions.NotFound:
                 error = Error.DOCUMENT
         else:
             error = Error.UID
-        return RequestBuilder.buildrequest('',UID)
+        request = RequestBuilder('', UID)
+        return request.get_request()
 
 
 top_score_parser = reqparse.RequestParser()
@@ -63,11 +65,14 @@ class GetTopScores(Resource):
             if args['end']:
                 data = scores.get_scores_sorted()
                 print(data[int(args['start']):int(args['end'])])
-                return RequestBuilder.buildrequest(data[int(args['start']):int(args['end'])], None)
-            return RequestBuilder.buildrequest(data[int(args['start']):], None)
+                request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
+                return request.get_request()
+            request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
+            return request.get_request()
         except exceptions.NotFound:
             error = Error.DOCUMENT
-        return RequestBuilder.buildrequest('',error)
+        request = RequestBuilder('', error)
+        return request.get_request()
 
 
 player_parser = reqparse.RequestParser()
@@ -80,12 +85,14 @@ class GetPlayer(Resource):
             try:
                 data = doc_ref.get().to_dict()
                 player = Player(data['username'], data['scores'])
-                return RequestBuilder.buildrequest(player, None)
+                request = RequestBuilder(player, None)
+                return request.get_request()
             except exceptions.NotFound:
                 error = Error.DOCUMENT
         else:
             error = Error.UID
-        return RequestBuilder.buildrequest('', error)
+        request = RequestBuilder('', error)
+        return request.get_request()
 
 
 player_scores_parser = reqparse.RequestParser()
@@ -104,12 +111,14 @@ class GetPlayerScores(Resource):
                     scores = player.get_top_scores(args['cutoff'], args['topend'])
                 else:
                     scores = player.get_top_scores(args['cutoff'])
-                return RequestBuilder.buildrequest(scores, None)
+                request = RequestBuilder(scores, None)
+                return request.get_request()
             except exceptions.NotFound:
                 error = Error.DOCUMENT
         else:
             error = Error.UID
-        return RequestBuilder.buildrequest('', error)
+        request = RequestBuilder('', error)
+        return request.get_request()
 
 
 class Test(Resource):
