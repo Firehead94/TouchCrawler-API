@@ -61,7 +61,7 @@ class GetTopScores(Resource):
             data = []
             for doc in doc_ref:
                 info = doc.to_dict()
-                tmp = [info['score'], info['uid'], int(info['date'].timestamp_pb().__str__())]
+                tmp = [info['score'], info['uid'], info['date'].timestamp_pb().__str__()]
                 data.append(tmp)
             scores = TopScores(data)
             if args['end']:
