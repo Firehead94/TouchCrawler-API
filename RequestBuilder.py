@@ -10,6 +10,10 @@ class RequestBuilder:
 
     def buildrequest(self, data, error: typing.Optional = None):
         request = gettemplate()
+        print("data")
+        print(data)
+        print("error")
+        print(error)
         if data is not None:
             request["data"] = data
         else:
