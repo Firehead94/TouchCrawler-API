@@ -52,10 +52,13 @@ top_score_parser.add_argument('end', type=int)
 class GetTopScores(Resource):
     def get(self):
         args = top_score_parser.parse_args()
-        doc_ref = db.collection(u'topscores').document(u'scores')
+        doc_ref = db.collection(u'topscores').get()
         try:
             data = doc_ref.get().to_dict()
-            scores = TopScores(data['scores'])
+            print("===========")
+            print(data)
+            print("===========")
+            scores = TopScores(None)
             if args['end']:
                 return RequestBuilder.buildrequest(scores.get_scores_sorted()[args['start']:args['end']], None)
             return RequestBuilder.buildrequest(scores.get_scores_sorted()[args['start']], None)
