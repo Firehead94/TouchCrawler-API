@@ -124,6 +124,6 @@ def Validate(token):
 
 api.add_resource(Test, "/test")
 api.add_resource(AddScore, "/addscore")  ## https://touchcrawler.appspot.com/addscore?key=XXXXXXXXXXXXXXXXXX&score=
-api.add_resource(GetPlayer, "/player") ## https://touchcrawler.appspot.com/addscore?id=XXXXXXXXXXXXXXXXXX
-api.add_resource(GetPlayerScores, "/playerscores") ## https://touchcrawler.appspot.com/addscore?id=XXXXXXXXXXXXXXXXXX&start=XXXXXXXXXXXXXXXXXX&end=XXXXXXXXXXXXXXXXXXXXX
+api.add_resource(GetPlayer, "/player") ## https://touchcrawler.appspot.com/player?id=XXXXXXXXXXXXXXXXXX
+api.add_resource(GetPlayerScores, "/playerscores") ## https://touchcrawler.appspot.com/player?id=XXXXXXXXXXXXXXXXXX&start=XXXXXXXXXXXXXXXXXX&end=XXXXXXXXXXXXXXXXXXXXX
 api.add_resource(GetTopScores, "/topscores") ## https://touchcrawler.appspot.com/topscores?start=XXXXXXXXXXXXXXXXXX&end=XXXXXXXXXXXXXXXXXXXXX  ## end is optional
