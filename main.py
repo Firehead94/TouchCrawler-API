@@ -68,7 +68,7 @@ class GetTopScores(Resource):
                 data = scores.get_scores_sorted()
                 request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
                 return request.get_request()
-            request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
+            request = RequestBuilder(data[int(args['start']):], None)
             return request.get_request()
         except exceptions.NotFound:
             error = Error.DOCUMENT
