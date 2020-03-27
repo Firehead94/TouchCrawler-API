@@ -64,7 +64,7 @@ class GetTopScores(Resource):
                 tmp = [info['score'], info['uid'], info['date'].timestamp_pb().__str__()]
                 data.append(tmp)
             scores = TopScores(data)
-            if args['end']:
+            if args['end'] and args['end'] is not 0:
                 data = scores.get_scores_sorted()
                 request = RequestBuilder(data[int(args['start']):int(args['end'])], None)
                 return request.get_request()
