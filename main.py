@@ -32,7 +32,8 @@ class AddScore(Resource):
         key = args['key']
 
         UID = Validate(key)
-        print("UID= " + UID)
+        print("UID= ")
+        print(UID)
         if UID is not None:
             doc_ref = db.collection(u'players').document(UID)
             try:
@@ -135,7 +136,8 @@ class Test(Resource):
 def Validate(token):
     try:
         idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
-        print("ID INFO= " +idinfo)
+        print("ID INFO= ")
+        print(idinfo)
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Invalid Token Issuer...')
         return idinfo['sub']
