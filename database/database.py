@@ -1,5 +1,6 @@
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials
+from google.cloud import firestore
 import typing
 import operator
 

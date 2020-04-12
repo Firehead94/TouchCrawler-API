@@ -1,5 +1,4 @@
 from configparser import ConfigParser
-import google
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from google.oauth2 import id_token
@@ -7,12 +6,9 @@ from google.auth.transport import requests
 import time
 import RequestBuilder
 from RequestBuilder import Error, RequestBuilder
-import database.database
 from database.database import db, Player, TopScores
 from google.cloud import exceptions
-from google.api_core import datetime_helpers
 import datetime
-from google.cloud import firestore
 
 credentialsFile = "./credentials.ini"
 credentials_web = ConfigParser()
@@ -38,7 +34,7 @@ class AddScore(Resource):
             top_Score_ref = db.collection(u'topscores').document(str(idinfo['sub']) + str(time.time()))
             try:
                 doc_ref.set({u'username':idinfo['name']})
-                doc_ref.update({u'scores': {str(datetime.datetime.now()):str(score)}}, merge=True)
+                doc_ref.set({u'scores': {str(datetime.datetime.now()):str(score)}}, merge=True)
 
                 top_Score_ref.set({u'date':datetime.datetime.now(),u'score':score,u'uid':idinfo['name']})
                 request = RequestBuilder({"success":True}, None)
