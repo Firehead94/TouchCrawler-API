@@ -38,7 +38,7 @@ class AddScore(Resource):
             top_Score_ref = db.collection(u'topscores').document(str(idinfo['sub']) + str(time.time()))
             try:
                 doc_ref.set({u'username':idinfo['name']})
-                doc_ref.update({u'scores': firestore.ArrayUnion([[score,time.time()]])})
+                doc_ref.update({u'scores': firestore.ArrayUnion([str(score) + "::" + str(time.time())])})
 
                 top_Score_ref.set({u'date':time.time(),u'score':score,u'uid':idinfo['name']})
                 request = RequestBuilder({"success":True}, None)
