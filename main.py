@@ -139,7 +139,8 @@ def Validate(token):
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Invalid Token Issuer...')
         return idinfo['sub']
-    except ValueError:
+    except ValueError as e:
+        print(e)
         return None
 
 
