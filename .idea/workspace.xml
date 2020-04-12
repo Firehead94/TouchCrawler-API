@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8b47c7d0-995a-4602-a747-f9213eb2aafb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -19,8 +20,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="697">
-              <caret line="66" column="51" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
+            <state relative-caret-position="939">
+              <caret line="137" column="21" selection-start-line="137" selection-start-column="21" selection-end-line="137" selection-end-column="21" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+                <element signature="e#2806#3388#0" />
+                <element signature="e#3631#4427#0" />
+                <element signature="e#4454#4517#0" />
+                <element signature="e#4545#4596#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -40,7 +48,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/RequestBuilder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
+            <state relative-caret-position="595">
               <caret line="40" column="135" selection-start-line="40" selection-start-column="135" selection-end-line="40" selection-end-column="135" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
@@ -85,8 +93,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="133" />
-    <option name="y" value="188" />
+    <option name="x" value="-2732" />
+    <option name="y" value="-20" />
     <option name="width" value="1919" />
     <option name="height" value="1100" />
   </component>
@@ -98,7 +106,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -115,6 +122,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -199,18 +207,19 @@
       <workItem from="1581136196948" duration="58000" />
       <workItem from="1582154460730" duration="10153000" />
       <workItem from="1582591296585" duration="1982000" />
-      <workItem from="1585334624863" duration="271000" />
+      <workItem from="1585334624863" duration="879000" />
+      <workItem from="1586693501939" duration="1176000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22871000" />
+    <option name="totallyTimeSpent" value="24655000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="3456" height="1426" extended-state="6" />
+    <frame x="-2568" y="-8" width="2576" height="1426" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14310955" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19435611" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -285,8 +294,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="697">
-          <caret line="66" column="51" selection-start-line="66" selection-start-column="51" selection-end-line="66" selection-end-column="51" />
+        <state relative-caret-position="939">
+          <caret line="137" column="21" selection-start-line="137" selection-start-column="21" selection-end-line="137" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <element signature="e#2806#3388#0" />
+            <element signature="e#3631#4427#0" />
+            <element signature="e#4454#4517#0" />
+            <element signature="e#4545#4596#0" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -302,7 +318,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/RequestBuilder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
+        <state relative-caret-position="595">
           <caret line="40" column="135" selection-start-line="40" selection-start-column="135" selection-end-line="40" selection-end-column="135" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
