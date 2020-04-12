@@ -12,6 +12,7 @@ from database.database import db, Player, TopScores
 from google.cloud import exceptions
 from google.api_core import datetime_helpers
 import datetime
+from google.cloud import firestore
 
 credentialsFile = "./credentials.ini"
 credentials_web = ConfigParser()
@@ -31,24 +32,21 @@ class AddScore(Resource):
         score = args['score']
         key = args['key']
 
-        UID = Validate(key)
-        print("UID= ")
-        print(UID)
-        if UID is not None:
-            doc_ref = db.collection(u'players').document(UID)
+        idinfo = Validate(key)
+        if idinfo is not None:
+            doc_ref = db.collection(u'players').document(idinfo['sub'])
             try:
-                doc = doc_ref.get().to_dict()
-                player = Player(doc['username'], doc['scores'])
-                player.scores.append((time.time(), score))
-
-                doc_ref.set({u'username':player.username,u'scores':player.scores})
+                doc_ref.set({
+                    u'username':idinfo['name']
+                })
+                doc_ref.update({u'scores': firestore.ArrayUnion([score])})
                 request = RequestBuilder({"success":True}, None)
                 return request.get_request()
             except exceptions.NotFound:
                 error = Error.DOCUMENT
         else:
             error = Error.UID
-        request = RequestBuilder('', UID)
+        request = RequestBuilder('', idinfo['sub'])
         return request.get_request()
 
 
@@ -140,7 +138,7 @@ def Validate(token):
         print(idinfo)
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise ValueError('Invalid Token Issuer...')
-        return idinfo['sub']
+        return idinfo
     except ValueError as e:
         print(e)
         return None
