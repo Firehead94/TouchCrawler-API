@@ -35,8 +35,7 @@ class AddScore(Resource):
             try:
                 doc = doc_ref.get().to_dict()
                 doc['scores'][str(datetime.datetime.now())] = str(score)
-                doc_ref.set({u'username':idinfo['name']})
-                doc_ref.set(doc['scores'])
+                doc_ref.set({u'username':idinfo['name'],u'scores':doc['scores']})
 
                 top_Score_ref.set({u'date':datetime.datetime.now(),u'score':score,u'uid':idinfo['name']})
                 request = RequestBuilder({"success":True}, None)
