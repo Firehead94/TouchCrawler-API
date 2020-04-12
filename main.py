@@ -35,11 +35,12 @@ class AddScore(Resource):
         idinfo = Validate(key)
         if idinfo is not None:
             doc_ref = db.collection(u'players').document(idinfo['sub'])
+            top_Score_ref = db.collection(u'topscores').document(idinfo['sub'] + time.time())
             try:
-                doc_ref.set({
-                    u'username':idinfo['name']
-                })
-                doc_ref.update({u'scores': firestore.ArrayUnion([score])})
+                doc_ref.set({u'username':idinfo['name']})
+                doc_ref.update({u'scores': [firestore.ArrayUnion([score]),time.time()]})
+
+                top_Score_ref.set({u'date':time.time(),u'score':score,u'uid':idinfo['name']})
                 request = RequestBuilder({"success":True}, None)
                 return request.get_request()
             except exceptions.NotFound:
