@@ -33,8 +33,10 @@ class AddScore(Resource):
             doc_ref = db.collection(u'players').document(idinfo['sub'])
             top_Score_ref = db.collection(u'topscores').document(str(idinfo['sub']) + str(time.time()))
             try:
+                doc = doc_ref.get().to_dict()
+                doc['scores'][str(datetime.datetime.now())] = str(score)
                 doc_ref.set({u'username':idinfo['name']})
-                doc_ref.set({u'scores': {str(datetime.datetime.now()):str(score)}}, merge=True)
+                doc_ref.set(doc['scores'])
 
                 top_Score_ref.set({u'date':datetime.datetime.now(),u'score':score,u'uid':idinfo['name']})
                 request = RequestBuilder({"success":True}, None)
