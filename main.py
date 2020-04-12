@@ -35,7 +35,7 @@ class AddScore(Resource):
         idinfo = Validate(key)
         if idinfo is not None:
             doc_ref = db.collection(u'players').document(idinfo['sub'])
-            top_Score_ref = db.collection(u'topscores').document(idinfo['sub'] + time.time())
+            top_Score_ref = db.collection(u'topscores').document(str(idinfo['sub']) + str(time.time()))
             try:
                 doc_ref.set({u'username':idinfo['name']})
                 doc_ref.update({u'scores': [firestore.ArrayUnion([score]),time.time()]})
