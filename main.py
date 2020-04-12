@@ -40,7 +40,7 @@ class AddScore(Resource):
                 doc_ref.set({u'username':idinfo['name']})
                 doc_ref.update({u'scores': firestore.ArrayUnion([str(score) + "::" + str(time.time())])})
 
-                top_Score_ref.set({u'date':time.time(),u'score':score,u'uid':idinfo['name']})
+                top_Score_ref.set({u'date':datetime.datetime.now(),u'score':score,u'uid':idinfo['name']})
                 request = RequestBuilder({"success":True}, None)
                 return request.get_request()
             except exceptions.NotFound:
